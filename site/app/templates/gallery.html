@@ -1,0 +1,229 @@
+{% extends "base.html" %}
+
+{% block content %}
+{{ super() }}
+{% endblock %}
+
+{% block head %}
+<link href="{{ url_for('admin.admin_s', filename='assets/css/cards-gallery.css') }}" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.10.0/baguetteBox.min.css" />
+{% endblock %}
+
+
+{% block content_inner %}
+<!-- <div class="row">
+     <div class="card">
+     <div class="header">
+     <h4 class="title">{{ custom_content['page_headT'] }}</h4>
+     </div>
+     <div class="content">
+     <form action="" method="post">
+     {{ form.hidden_tag() }}
+     <div class="row">
+     <div class="col-md-6">
+     <div class="form-group {{'has-error' if form.gal_search.errors else upd}}">
+     {{ form.gal_search.label }}
+     {{ form.gal_search() }}
+     {% for error in form.gal_search.errors %}
+     <div class="alert alert-danger"><strong>{{ error }}</strong></div>
+     {% endfor %}
+     </div>
+     </div>
+     <div class="col-md-3">
+     <div class="form-group {{'has-error' if form.gal_filter.errors else upd}}">
+     {{ form.gal_filter.label }}
+     {{ form.gal_filter() }}
+     {% for error in form.gal_filter.errors %}
+     <div class="alert alert-danger"><strong>{{ error }}</strong></div>
+     {% endfor %}
+     </div>
+     </div>
+     <div class="col-md-3">
+     <div class="form-group {{'has-error' if form.gal_sort.errors else upd}}">
+     {{ form.gal_sort.label }}
+     {{ form.gal_sort() }}
+     {% for error in form.gal_sort.errors %}
+     <div class="alert alert-danger"><strong>{{ error }}</strong></div>
+     {% endfor %}
+     </div>
+     </div>
+     </div>
+     {{ form.submit(class_='btn btn-info btn-fill pull-right"') }}
+     <div class="clearfix"></div>
+     </form>
+     </div>
+     </div>
+     </div> -->
+
+<div class="row">
+    <div class="card">
+	<div class="header">
+	</div>
+	<div class="content">
+	    <div class="row">
+		<div class="col-md-12">
+		    <div class="input-group">
+			<span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>
+			<input id="search" type="text" class="form-control" placeholder="Search">
+		    </div>
+		</div>
+	    </div>
+	    <br>
+	    <div class="row">
+		<div class="col-md-4">
+		    <div class="form-group">
+			<div class="input-group">
+			    <span class="input-group-addon"><i class="glyphicon glyphicon-sort-by-alphabet"></i></span>
+			    <select class="form-control" id="sort">
+				<option value="li">Likes</option>
+				<option value="up">Upload Date</option>
+			    </select>
+			</div>
+		    </div>
+		</div>
+		<div class="col-md-4">
+		    <div class="form-group">
+			<div class="input-group">
+			    <span class="input-group-addon"><i class="glyphicon glyphicon-sort-by-attributes-alt"></i></span>
+			    <select class="form-control" id="rank">
+				<option value="true">High to Low</option>
+				<option value="false">Low to High</option>
+			    </select>
+			</div>
+		    </div>
+		</div>
+		<div class="col-md-4">
+		    <div class="form-group">
+			<button id="s_but" class="btn btn-info btn-block btn-fill">Search</button>
+		    </div>
+		</div>
+	    </div>
+	</div>
+    </div>
+</div>
+<div id="overlay" style="min-height:50vh">
+    <section class="gallery-block cards-gallery">
+	<div class="row" id="gal_div" >
+
+	    {% for vurl, title, thumbpath, pub_date, comment, likes, dislikes in video_info %}
+	    <div title="" class="col-md-4 col-lg-3">
+		<div class="gcard border-0 transform-on-hover">
+		    <a class="lightbox" href="{{ vurl|e }}">
+			<div class="gcard_img">
+			    <center>
+				<img src="{{ thumbpath|e }}" alt="Card Image" class="card-img-top">
+			    </center>
+			</div>
+		    </a>
+		    <div class="gcard-body">
+			<h6><a href="#">{{ title|e }}</a></h6>
+			<p class="text-muted card-text">{{ comment|e }}</p>
+		    </div>
+		</div>
+	    </div>
+	    {% endfor %}
+	</div>
+	<div id="end_text">
+
+	</div>
+    </section>
+</div>
+
+
+{% endblock %}
+
+{% block footer %}
+
+<script src="{{ url_for('admin.admin_s', filename='assets/js/api_front.js') }}"></script>
+<script src="https://cdn.jsdelivr.net/npm/gasparesganga-jquery-loading-overlay@2.1.6/dist/loadingoverlay.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.10.0/baguetteBox.min.js"></script>
+
+<script>
+ baguetteBox.run('.cards-gallery', { animation: 'slideIn'});
+
+ var sort_b = "";
+ var sort_h = true;
+ var query = "";
+ var last_num = {{ custom_content['last_id'] }};
+ var end_of_s = false;
+
+ function search_scroll_api(url, d_type, query, sort_by, sort_high, last_id, extend, data_func=null){
+     var xhr = new XMLHttpRequest();
+     xhr.open("POST", url, true);
+     xhr.setRequestHeader("Content-Type", "application/json");
+     console.log("called!!")
+     xhr.onreadystatechange = function () {
+	 if (xhr.readyState === 4 && xhr.status === 200) {
+             var json = JSON.parse(xhr.responseText);
+	     if(json['update_msg']){
+		 noti_msg(json['update_msg'], json['note_type']);
+	     }
+	     if(json['vid_search'] && data_func){
+		 console.log(json['vid_search']);
+		 data_func(json['vid_search'], json['end'], json['end_id'], extend);
+	     }
+	 }
+     };
+     var data = JSON.stringify({"c_type": "search", "target": d_type, "query": query, "sort_by": sort_by, "sort_desc" : sort_high, "last_index" : last_id});
+     xhr.send(data);
+ }
+
+
+
+ function create_gal(vid_el, end_up, new_last, extend_gal){
+     var vid_up = "";
+     //console.log(vid_el.length)
+     //console.log(vid_el[0]);
+     end_of_s = end_up;
+     console.log("creae_gal lastid "+ new_last)
+     last_num = new_last
+     /* for(vurl, title, thumbpath, pub_date, comment, likes, dislikes in vid_el){ */
+     for(var i = 0; i < vid_el.length; i++){
+	 //console.log(vid_el[i][1]);
+	 vid_up += '<div class="col-md-4 col-lg-3"><div class="gcard border-0 transform-on-hover">'
+		  +'<a class="lightbox" href="'+vid_el[i][0]+'"><div class="gcard_img">'
+		  +'<center><img src="'+vid_el[i][2]+'" alt="Card Image" class="card-img-top">'
+		  +'</center></div></a><div class="gcard-body"><h6><a href="#">'+vid_el[i][1]+'</a></h6>'
+		  +'<p class="text-muted card-text">'+vid_el[i][4]+'</p></div></div></div>'
+     };
+     //console.log(vid_up);
+     if(extend_gal){
+	 $("#gal_div").append(vid_up);
+     }
+     else{
+	 $("#gal_div").html(vid_up);
+     }
+     if(end_up){
+	 $("#end_text").append("<p>End of search results</p>");
+     }
+     $.LoadingOverlay("hide");
+ }
+
+ function search_fun(last_id, sort_b, sort_h, query, extend_gal){
+     $.LoadingOverlay("show", {
+	 imageColor      : "#9A6CDB"
+     });
+     console.log(sort_b + " "+ sort_h + " " + query);
+     search_scroll_api("{{ url_for('admin.api') }}", "video", query, sort_b, sort_h, last_id, extend_gal, create_gal);
+};
+
+ $(document).ready(function(){
+
+     $("#s_but").click(function() {
+	 sort_b = $("#sort").val();
+	 sort_h = ($("#rank").val() == 'true');
+	 query = $("#search").val();
+	 search_fun(0, sort_b, sort_h, query, false);
+     });
+
+     $(window).scroll(function() {
+	 if(($(window).scrollTop() == $(document).height() - $(window).height()) && !end_of_s) {
+             search_fun(last_num, sort_b, sort_h, query, true)
+	     console.log("scroll lastid "+ last_num)
+	 }
+     });
+
+ });
+</script>
+
+{% endblock %}

@@ -1,0 +1,60 @@
+/* centered columns styles */
+
+.row-centered {
+    text-align:center;
+    margin-top: -4px;
+    background-color: blue;
+    width: 100%;
+}
+.col-centered {
+    display:inline-block;
+    float:none;
+    height: 100px;
+    /* reset the text-align */
+    text-align:left;
+    /* inline-block space fix */
+    margin-right:-4px;
+    text-align: center;
+    background-color: red;
+}
+
+.play_bar{
+    display:inline-block;
+    min-width: 100%;
+    padding-top: 15px;
+}
+
+.profile_box{
+    text-align: center;
+    width: 100%;
+    display:inline-block;
+}
+
+.likes_box{
+    width: 100%;
+    padding: 15px 0px 15px;
+}
+
+.likes_box_r{
+    text-align: right;
+}
+
+.arrow {
+    padding-bottom: 5px;
+    padding-top: 5px;
+}
+
+.arrow_r {
+    text-align:right;
+    float: right;
+}
+
+.vid_img_div {
+    border-radius: 50%;
+}
+
+.vid_img_pro {
+    border-radius: 50%;
+    width: 50%;
+    height: auto;
+}

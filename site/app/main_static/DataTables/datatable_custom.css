@@ -1,0 +1,43 @@
+.table tbody tr.even {
+	background-color: #e2e2e2;
+}
+
+.table tbody tr.even:hover, .table tbody tr.even td.highlighted {
+	background-color: #ad90e5;
+}
+
+.table tbody tr.odd:hover, .table tbody tr.odd td.highlighted {
+	background-color: #ad90e5;
+}
+
+.table tr.even:hover {
+	background-color: #ad90e5;
+}
+
+.table tr.even:hover td.sorting_1 {
+	background-color: #c8b3f2;
+}
+
+.table tr.even:hover td.sorting_2 {
+	background-color: #c8b3f2;
+}
+
+.table tr.even:hover td.sorting_3 {
+	background-color: #c8b3f2;
+}
+
+.table tr.odd:hover {
+	background-color: #ad90e5;
+}
+
+.table tr.odd:hover td.sorting_1 {
+	background-color: #c8b3f2;
+}
+
+.table tr.odd:hover td.sorting_2 {
+	background-color: #c8b3f2;
+}
+
+.table tr.odd:hover td.sorting_3 {
+	background-color: #c8b3f2;
+}
