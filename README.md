@@ -23,3 +23,7 @@ Or call the bash file "main.sh" with the -s flag.
 ```bash
 ./main.sh -s
 ```
+
+# Frontend
+
+The frontend is created using various pieces modified and fitted to this project. The main theme used throughout is one called "Light Bootstrap Dashboard" by *creative tim*, template can be seen [here](https://www.creative-tim.com/product/light-bootstrap-dashboard).
