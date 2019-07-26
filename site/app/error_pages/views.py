@@ -4,6 +4,12 @@ from flask import render_template, redirect, url_for
 from flask_login import current_user
 from app import db
 
+def problems(custom_content, title, description, nav, logoinf, right_bar):
+    custom_content['title'] = title
+    custom_content['page_headT'] = description
+    return render_template('error_pages.msg_page.html', logoinf=logoinf, right_bar=right_bar,
+                           navigation_bar=nav, custom_content=custom_content)
+
 def page_not_permitted(e):
     if current_user.is_authenticated:
         err = '403 - Access not permitted'
@@ -11,7 +17,7 @@ def page_not_permitted(e):
                     'Beware yee who threads beyond the laws of admin.')
         return error(err, err_disp), 403
     else:
-        return redirect(url_for('admin.login'))
+        return redirect(url_for('login_b.login'))
 
 def page_not_found(e):
     err = '404 - Page not found'
@@ -23,4 +29,4 @@ def page_not_found(e):
 def error(err, err_disp):
     custom_content = {'error_title': err,
                       'error_description' : err_disp, 'link' : '/index'}
-    return render_template('error.html', custom_content=custom_content)
+    return render_template('error_pages.error.html', custom_content=custom_content)

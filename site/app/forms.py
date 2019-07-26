@@ -11,7 +11,7 @@ from flask_login import current_user
 
 class SearchForm(FlaskForm):
     gal_search = StringField('Search By', render_kw={"class": "form-control"})
-    gal_filter =  SelectField('Filter By', choices=[('li', 'Likes'), ('ct', 'Upload Time')], validators=[DataRequired()], render_kw={"class": "form-control"})
+    gal_filter =  SelectField('Filter By', choices=[('ct', 'Upload Time'), ('li', 'Likes')], validators=[DataRequired()], render_kw={"class": "form-control"})
     gal_sort =  SelectField('Sort By', choices=[('high', 'High to Low'), ('low', 'Low to High')], validators=[DataRequired()], render_kw={"class": "form-control"})
     submit = SubmitField('Search')
 

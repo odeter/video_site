@@ -1,0 +1,53 @@
+.gallery-block{
+}
+
+.gallery-block.cards-gallery h6 {
+  font-size: 17px;
+  font-weight: bold;
+}
+
+.gallery-block.cards-gallery .gcard{
+    transition: 0.4s ease;
+    overflow: hidden;
+}
+
+.gallery-block.cards-gallery .gcard .gcard_img {
+    background-color: black;
+}
+
+.gallery-block.cards-gallery .gcard .gcard_img img {
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.15);
+    width: auto;
+    height: 200px;
+    margin-left: 50%;
+    transform: translateX(-50%);
+}
+
+.gallery-block.cards-gallery .gcard-body {
+  text-align: center;
+}
+
+.gallery-block.cards-gallery .gcard-body p {
+  font-size: 15px;
+}
+
+.gallery-block.cards-gallery a {
+  color: #212529;
+}
+
+.gallery-block.cards-gallery a:hover {
+  text-decoration: none;
+}
+
+.gallery-block.cards-gallery .gcard {
+  margin-bottom: 30px;
+  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.15);
+}
+
+@media (min-width: 576px) {
+
+	.gallery-block .transform-on-hover:hover {
+	    transform: translateY(-10px) scale(1.02);
+	    box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.15) !important;
+	}
+}

@@ -22,10 +22,10 @@ from flask_mail import Message
 @rbac_manager.exempt
 def login():
     if current_user.is_authenticated:
-        return redirect(url_for('admin.index'))
+        return redirect(url_for('user_main.index'))
     form = LoginForm()
-    custom_content = {'title': 'Sign In', 'update': None, 'error' : None, 'logincheck' : url_for('admin.logincheck')}
-    return render_template('login.html', form=form, custom_content=custom_content)
+    custom_content = {'title': 'Sign In', 'update': None, 'error' : None, 'logincheck' : url_for('login_b.logincheck')}
+    return render_template('login_b.login.html', form=form, custom_content=custom_content)
 
 @login_b.route('/logincheck', methods=['POST'])
 @rbac_manager.exempt
@@ -42,7 +42,7 @@ def logincheck():
             login_user(user)
             next_page = request.args.get('next')
             if not next_page or url_parse(next_page).netloc != '':
-                next_page = url_for('admin.index')
+                next_page = url_for('user_main.index')
             return jsonify(data={'su_re': next_page})
     for fieldName, errorMessages in form.errors.items():
         for err in errorMessages:
@@ -53,4 +53,4 @@ def logincheck():
 @rbac_manager.exempt
 def logout():
     logout_user()
-    return redirect(url_for('admin.login'))
+    return redirect(url_for('login_b.login'))

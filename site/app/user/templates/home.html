@@ -1,0 +1,58 @@
+{% extends "user_main.base.html" %}
+
+{% block content %}
+{{ super() }}
+{% endblock %}
+
+{% block head %}
+<link href="{{ url_for('user_main.static_locked', filename='masonry/css/component.css') }}" rel="stylesheet" type="text/css">
+{% endblock %}
+
+
+{% block content_inner %}
+<div id="content-wrapper">
+
+    <div class="container-fluid">
+
+	<div class="grid effect-1">
+	    {% for vurl, title, thumbpath, pub_date, comment in video_info %}
+	    <li>
+		<div class="m-content">
+		    <a href="{{ vurl|e }}">
+			<div class="content-overlay"></div>
+			<img src="{{ thumbpath|e }}" class="content-image" style="width:100%" alt="{{ comment|e }}">
+			<div class="content-details fadeIn-top">
+			    <h3>{{ title|e }}</h3>
+			    <p>{{ comment|e }}</p>
+			</div>
+		    </a>
+		</div>
+	    </li>
+	    {% endfor %}
+	</ul>
+    </div>
+</div>
+{% endblock %}
+
+{% block footer %}
+<script src="{{ url_for('user_main.static_locked', filename='masonry/js/modernizr.custom.js') }}"></script>
+<script src="{{ url_for('user_main.static_locked', filename='masonry/js/masonry.pkgd.js') }}"></script>
+<script src="{{ url_for('user_main.static_locked', filename='masonry/js/imagesloaded.pkgd.js') }}"></script>
+<script src="{{ url_for('user_main.static_locked', filename='masonry/js/classie.js') }}"></script>
+<script src="{{ url_for('user_main.static_locked', filename='masonry/js/AnimOnScroll.js') }}"></script>
+
+<script>
+
+ $('.grid').masonry({
+     itemSelector: '.grid-item', // use a separate class for itemSelector, other than .col-
+     columnWidth: '.grid-sizer',
+     percentPosition: true
+ });
+
+ /* new AnimOnScroll( document.getElementById( 'grid' ), {
+    minDuration : 0.4,
+    maxDuration : 0.7,
+    viewportFactor : 0.2
+    } ); */
+</script>
+{% endblock %}

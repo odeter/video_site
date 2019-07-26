@@ -1,0 +1,52 @@
+{% extends "user_main.base.html" %}
+
+{% block content %}
+{{ super() }}
+{% endblock %}
+
+
+{% block content_inner %}
+<div class="row">
+    <div class="card">
+	<div class="content">
+	    <table id="role_table" class="table table-hover table-striped table-bordered" style="width:100%">
+		<thead>
+		    <tr>
+			{% for ff in custom_content['role_list_head'] %}
+			<th>{{ ff|e }}</th>
+			{% endfor %}
+		    </tr>
+		</thead>
+		<tbody>
+		    {% for role in custom_content['role_list'] %}
+		    <tr>
+			{% for field in role %}
+			<td>{{ field|e }}</td>
+			{% endfor %}
+		    </tr>
+		    {% endfor %}
+		</tbody>
+	    </table>
+	    <br>
+	    <a href="{{ custom_content['add_role_link'] }}" class="btn btn-info btn-fill">New Role</a>
+	</div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block footer %}
+<!--     Datatables CSS    -->
+<link href="{{ url_for('user_main.static_locked', filename='DataTables/dataTables.bootstrap.min.css')}}" rel="stylesheet" type="text/css"/>
+
+<!--     Datatables scripts     -->
+<script src="{{ url_for('user_main.static_locked', filename='DataTables/jquery.dataTables.min.js')}}" type="text/javascript"></script>
+<script src="{{ url_for('user_main.static_locked', filename='DataTables/dataTables.bootstrap.min.js')}}" type="text/javascript"></script>
+
+<script type="text/javascript">
+ $(document).ready(function(){
+     $('#role_table').DataTable();
+ });
+</script>
+
+{% endblock %}

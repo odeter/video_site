@@ -179,6 +179,11 @@ class RBAC(object):
 
         app.before_request(self._authenticate)
 
+
+    def add_bp_static(self, app, bp):
+        view_name = bp.name+".static"
+        self.acl.allow(anonymous, 'GET', app.view_functions[view_name])
+
     def as_role_model(self, model_cls):
         """A decorator to set custom model or role.
 
