@@ -1,0 +1,295 @@
+{% extends "user_main.base.html" %}
+
+{% block content %}
+{{ super() }}
+{% endblock %}
+
+{% set upd = 'has-success' if custom_content['update'] %}
+
+{% block head %}
+<link href="{{ url_for('user_main.static_locked', filename='input_scripts/file_input_bootstrap/css/fileinput.min.css')}}" rel="stylesheet" />
+
+<!--     Datatables CSS    -->
+<link href="{{ url_for('user_main.static_locked', filename='DataTables/dataTables.bootstrap.min.css')}}" rel="stylesheet" type="text/css"/>
+<link href="{{ url_for('user_main.static_locked', filename='DataTables/datatable_custom.css')}}" rel="stylesheet" type="text/css"/>
+{% endblock %}
+
+{% block content_inner %}
+<div class="row">
+    <ul class="nav nav-tabs">
+	<li class="active nav-item">
+	    <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">{{ custom_content['page_headT'] }}</a>
+	</li>
+        <li class="nav-item">
+	  <a class="nav-link" id="image-tab" data-toggle="tab" href="#pimg" role="tab" aria-controls="video" aria-selected="false">Profile Image</a>
+	</li>
+	<li class="nav-item">
+	    <a class="nav-link" id="video-tab" data-toggle="tab" href="#video" role="tab" aria-controls="video" aria-selected="false">Videos</a>
+	</li>
+	<li class="nav-item">
+	    <a class="nav-link" id="comments-tab" data-toggle="tab" href="#comment" role="tab" aria-controls="comments" aria-selected="false">Comments</a>
+	</li>
+    </ul>
+    <div class="tab-content" id="myTabContent">
+	<div class="tab-pane active in" id="home" role="tabpanel" aria-labelledby="home-tab">
+	    <div class="card" style="border-radius: 0px;">
+		<div class="content">
+		    <form action="" method="post" enctype="multipart/form-data">
+		      {{ form.hidden_tag() }}
+		      <div class="row">
+			    <div class="col-md-6">
+				<div class="form-group {{'has-error' if form.username.errors else upd}}">
+				    {{ form.username.label }}
+				    {{ form.username }}
+				    {% for error in form.username.errors %}
+				    <div class="alert alert-danger"><strong>{{ error }}</strong></div>
+				    {% endfor %}
+				</div>
+			    </div>
+			    <div class="col-md-6">
+				<div class="form-group {{'has-error' if form.email.errors else upd}}">
+				    {{ form.email.label }}
+				    {{ form.email }}
+				    {% for error in form.email.errors %}
+				    <div class="alert alert-danger"><strong>{{ error }}</strong></div>
+				    {% endfor %}
+				</div>
+			    </div>
+			</div>
+			<div class="row">
+			    <div class="col-md-6">
+				<div class="form-group {{'has-error' if form.password.errors else upd}}">
+				    {{ form.password.label }}
+				    {{ form.password }}
+				    {% for error in form.password.errors %}
+				    <div class="alert alert-danger"><strong>{{ error }}</strong></div>
+				    {% endfor %}
+				</div>
+			    </div>
+			    <div class="col-md-6">
+				<div class="form-group {{'has-error' if form.password2.errors else upd}}">
+				    {{ form.password2.label }}
+				    {{ form.password2 }}
+				    {% for error in form.password2.errors %}
+				    <div class="alert alert-danger"><strong>{{ error }}</strong></div>
+				    {% endfor %}
+				</div>
+			    </div>
+			</div>
+
+			<div class="row">
+			    <div class="col-md-12">
+				<div class="form-group {{'has-error' if form.about_me.errors else upd}}">
+				    {{ form.about_me.label }}
+				    {{ form.about_me }}
+				    {% for error in form.about_me.errors %}
+				    <div class="alert alert-danger"><strong>{{ error }}</strong></div>
+				    {% endfor %}
+				</div>
+			    </div>
+			</div>
+			{{ form.submit_acc() }}
+			<div class="clearfix"></div>
+		    </form>
+		</div>
+	    </div>
+	</div>
+	<div class="tab-pane" id="pimg" role="tabpanel" aria-labelledby="image-tab">
+	  <div class="card" style="border-radius: 0px;">
+	    <div class="content">
+              <form action="" method="post" enctype="multipart/form-data">
+		{{ proimg_form.hidden_tag() }}
+		<div class="row">
+                  <div class="col-md-12">
+		    <div class="form-group">
+		      {{ proimg_form.pro_pic}}
+		      <div class="col-md-6">
+                        <input id="preview_img" type="file"></input>
+		      </div>
+		      <div class="col-md-6">
+			<div id="rezize_img" style="width:100%; height:100%; overflow: hidden;">
+			</div>
+		      </div>
+		      {% for error in proimg_form.pro_pic.errors %}
+			<div class="alert alert-danger"><strong>{{ error }}</strong></div>
+		      {% endfor %}
+		    </div>
+		  </div>
+                </div>
+                {{ proimg_form.submit_pro() }}
+		<div class="clearfix"></div>
+              </form>
+            </div>
+          </div>
+        </div>
+	<div class="tab-pane" id="video" role="tabpanel" aria-labelledby="video-tab">
+	  <div class="card" style="border-radius: 0px;">
+	    <div class="content">
+	      <table id="vid_table" class="table table-hover table-striped table-bordered" style="width:100%">
+		<thead>
+		  <tr>
+		    {% for head in custom_content['u_video_head'] %}
+		      <th>{{ head|e }}</th>
+		    {% endfor %}
+		  </tr>
+		</thead>
+		<tbody>
+		  {% for link, img, vid in custom_content['u_videos'] %}
+		    <tr class='clickable-row' data-href='{{ link|e }}'>
+		      <td><img src="{{ img|e }}" height="50"></td>
+		      {% for field in vid %}
+			<td>{{ field|e }}</td>
+		      {% endfor %}
+		    </tr>
+		  {% endfor %}
+		</tbody>
+	      </table>
+	    </div>
+	  </div>
+	</div>
+	<div class="tab-pane" id="comment" role="tabpanel" aria-labelledby="comments-tab">
+	  <div class="card" style="border-radius: 0px;">
+		<div class="content">
+		    <table id="com_table" class="table table-hover table-striped table-bordered" style="width:100%">
+			<thead>
+			    <tr>
+				{% for head in custom_content['u_com_head'] %}
+				<th>{{ head|e }}</th>
+				{% endfor %}
+			    </tr>
+			</thead>
+			<tbody>
+			    {% for link, img, com, id in custom_content['u_comment'] %}
+			    <tr id="{{id|e}}">
+				<td class="clickable-row" data-href='{{ link|e }}'>{%if img %}
+				    <img src="{{ img|e }}" height="50">
+				    {% else %}
+				    <i class="fa fa-picture-o" aria-hidden="true"></i>
+				    {% endif %}
+				</td>
+				{% for field in com %}
+				<td class="clickable-row" data-href='{{ link|e }}'>{{ field|e }}</td>
+				{% endfor %}
+				<td><button id="{{ id|e }}" class="btn btn-info btn-fill del_button">Delete Comment</button></td>
+			    </tr>
+			    {% endfor %}
+			</tbody>
+		    </table>
+		</div>
+	    </div>
+	</div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block footer %}
+
+<!--     Datatables scripts     -->
+<script src="{{ url_for('user_main.static_locked', filename='DataTables/jquery.dataTables.min.js')}}" type="text/javascript"></script>
+<script src="{{ url_for('user_main.static_locked', filename='DataTables/dataTables.bootstrap.min.js')}}" type="text/javascript"></script>
+<script src="{{ url_for('user_main.static_locked', filename='assets/js/api_front.js') }}"></script>
+<script src="{{ url_for('user_main.static_locked', filename='input_scripts/file_input_bootstrap/js/plugins/purify.min.js') }}" type="text/javascript"></script>
+<script src="{{ url_for('user_main.static_locked', filename='input_scripts/file_input_bootstrap/js/fileinput.min.js') }}"></script>
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/croppie.css') }}" />
+<script src="{{ url_for('static', filename='js/croppie.js') }}"></script>
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
+
+<script type="text/javascript">
+  $(document).ready(function(){
+
+
+    var r= $('<input type="button" id="crop_but" class="form-control" value="Crop Picture"/>');
+    $('#vid_table').DataTable();
+    $('#com_table').DataTable();
+    $(".clickable-row").click(function() {
+      window.location = $(this).data("href");
+    });
+    /* var crop_area = $('#rezize_img').croppie({
+       enableExif: true,
+       viewport: {
+       width: 200,
+       height: 200,
+       type: 'circle'
+       },
+       boundary: {
+       width: 300,
+       height: 300
+       },
+       enforceBoundary: false
+       }); */
+    $(document).on("click", "#crop_but" , function() {
+      console.log("is clicked");
+      //var resize = $('#rezize_img').croppie();
+      $('#rezize_img').croppie("result", {type: "base64"}).then(function(dataImg) {
+        var data = [{ image: dataImg }, { name: 'cropped_img.jpg' }];
+	var filen = new Blob(data, {type: "application/zip"})
+        // use ajax to send data to php
+	console.log(data);
+        console.log(filen);
+
+        var img = $('.file-preview-image');
+        img.attr("src", dataImg)
+        $('#fiup').val(dataImg);
+      })
+    });
+    $(".del_button").click(function() {
+      var target_id = $(this).attr('id');
+      $.confirm({
+	title: 'Delete Comment?',
+	     content: 'Please confirm to delete comment',
+	buttons: {
+	  confirm: function () {
+	    api_delCom("{{ url_for('api_r.api') }}", "comment", target_id, 'com_table');
+	  },
+	  cancel: function () {
+	  }
+	}
+      });
+    });
+    $("#preview_img").fileinput({
+      maxFileCount: 1,
+      autoReplace: true,
+      allowedFileTypes: ["image"]
+    });
+    $('#preview_img').on('fileclear', function(event) {
+      console.log("file removed")
+      $('#rezize_img').croppie('destroy');
+      r.remove();
+    });
+    $('#preview_img').on('fileuploaded', function(event, previewId, index, fileId) {
+    })
+    $('#preview_img').on('fileloaded', function(event, file, previewId, index, reader) {
+      console.log("fileloaded");
+      //crop_area.croppie("bind", {url: file});
+      var reader = new FileReader();
+      reader.onload = function (e) {
+        //crop_area.croppie("bind", { url: e.target.result });
+	var dd = $('#rezize_img').croppie({
+	  enableExif: true,
+	  viewport: {
+	    width: 200,
+	    height: 200,
+	    type: 'circle'
+	  },
+	  boundary: {
+            width: 280,
+            height: 280
+	  }
+	});
+        dd.croppie('bind', {
+          url: e.target.result
+        });
+        $("#rezize_img").append(r);
+        //$("#upload-preview").addClass("ready");
+      }
+      reader.readAsDataURL(file);
+    });
+  });
+</script>
+
+{% endblock %}
